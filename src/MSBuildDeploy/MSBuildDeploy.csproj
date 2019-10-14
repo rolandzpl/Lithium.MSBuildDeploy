@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<UseFullSemVerForNuGet>true</UseFullSemVerForNuGet>
+		<!--<VersionPrefix>0.0.2</VersionPrefix>
+		<VersionSuffix>alpha</VersionSuffix>-->
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>Lithium.MSBuildDeploy</PackageId>
+		<Title>MSBuild target for copying files via SFTP protocol</Title>
+		<Description>MSBuild task set for deploying projects over SSH</Description>
+		<Authors>Roland Żerek</Authors>
+		<Company>lithium.com.pl</Company>
+		<Copyright>Copyright © 2019 by Roland Żerek (lithium.com.pl)</Copyright>
+		<RootNamespace>Lithium.Build</RootNamespace>
+		<AssemblyName>Lithium.MSBuildDeploy</AssemblyName>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/rolandzpl/Lithium.MSBuildDeploy.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/rolandzpl/Lithium.MSBuildDeploy</PackageProjectUrl>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="Lithium.MSBuildDeploy.targets" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitVersionTask" Version="5.0.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.0.461" />
+    <PackageReference Include="SSH.Net" Version="2016.1.0" PrivateAssets="All" />
+  </ItemGroup>
+
+	<Target Name="PackTaskDependencies" BeforeTargets="GenerateNuspec">
+		<!--
+    The include needs to happen after output has been copied to build output folder
+    but before NuGet generates a nuspec. See https://github.com/NuGet/Home/issues/4704.
+    -->
+		<Message Text="Preparing files for packaging..." />
+		<ItemGroup>
+			<_PackageFiles Include="bin\$(Configuration)\*\*.dll">
+				<PackagePath>tasks\%(RecursiveDir)</PackagePath>
+				<Visible>false</Visible>
+				<BuildAction>Content</BuildAction>
+			</_PackageFiles>
+			<_PackageFiles Include="Lithium.MSBuildDeploy.targets">
+				<PackagePath>build</PackagePath>
+				<Visible>false</Visible>
+				<BuildAction>Content</BuildAction>
+			</_PackageFiles>
+			<_PackageFiles Include="Lithium.MSBuildDeploy.props">
+				<PackagePath>build</PackagePath>
+				<Visible>false</Visible>
+				<BuildAction>Content</BuildAction>
+			</_PackageFiles>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="PublishToNugetOrg" DependsOnTargets="Pack">
+		<Error Condition="$(ApiKey) == ''" Text="ApiKey must be provided to publish package"/>
+		<PropertyGroup>
+			<PackageSourceUrl>https://api.nuget.org/v5/index.json</PackageSourceUrl>
+			<PackageFile>.\bin\Debug\Lithium.MSBuildDeploy.$(VersionPrefix)$(VersionSuffix).nupkg</PackageFile>
+		</PropertyGroup>
+		<Exec Command="dotnet nuget push '$(PackageFile)' -k $(ApiKey) -s $(PackageSourceUrl)" />
+	</Target>
+
+	<Target Name="PublishToLocal" DependsOnTargets="Pack">
+		<PropertyGroup>
+			<PackageSourceUrl>c:\Projects\nuget</PackageSourceUrl>
+			<PackageFile>.\bin\Debug\Lithium.MSBuildDeploy.$(VersionPrefix)$(VersionSuffix).nupkg</PackageFile>
+		</PropertyGroup>
+		<Exec Command="dotnet nuget push '$(PackageFile)' -s $(PackageSourceUrl)" />
+	</Target>
+
+</Project>

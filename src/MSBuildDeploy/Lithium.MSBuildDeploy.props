@@ -1,0 +1,13 @@
+﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
+
+	<PropertyGroup>
+		<TaskFolder Condition="'$(MSBuildRuntimeType)' == 'Core' ">netstandard2.1</TaskFolder>
+		<TaskFolder Condition="'$(MSBuildRuntimeType)' != 'Core' ">net46</TaskFolder>
+		<TaskAssembly>$(MSBuildThisFileDirectory)..\..\tasks\$(TaskFolder)\Lithium.MSBuildDeploy.dll</TaskAssembly>
+	</PropertyGroup>
+
+	<UsingTask TaskName="Sftp" AssemblyFile="$(TaskAssembly)" />
+
+	<UsingTask TaskName="SshCommand" AssemblyFile="$(TaskAssembly)" />
+
+</Project>

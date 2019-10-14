@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+		<RootNamespace>Lithium.Build</RootNamespace>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.13.0" />
+    <PackageReference Include="nunit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.0.461" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MSBuildDeploy\MSBuildDeploy.csproj" />
+  </ItemGroup>
+
+</Project>

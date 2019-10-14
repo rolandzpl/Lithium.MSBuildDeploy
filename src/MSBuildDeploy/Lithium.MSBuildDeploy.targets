@@ -1,0 +1,12 @@
+﻿<Project>
+
+	<Target Name="DeployToProd" >
+		<Sftp Source="$(DeploySource)"
+					Destination="$(DeployTarget)"
+					Host="$(DeployHost)"
+					Port="$(DeployPort)"
+					User="$(DeployUser)"
+					Keyfile="$(DeployKeyFile)" />
+	</Target>
+
+</Project>
