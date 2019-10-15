@@ -61,7 +61,7 @@
 	</Target>
 
 	<Target Name="PublishToNugetOrg" DependsOnTargets="Pack">
-		<Error Condition="$(ApiKey) == ''" Text="ApiKey must be provided to publish package"/>
+		<Error Condition="$(ApiKey) == ''" Text="ApiKey must be provided to publish package, i.e.: dotnet msbuild -t:PublishToNugetOrg -p:ApiKey=mynugetapikey" />
 		<PropertyGroup>
 			<PackageSourceUrl>https://api.nuget.org/v5/index.json</PackageSourceUrl>
 			<PackageFile>.\bin\Debug\Lithium.MSBuildDeploy.$(VersionPrefix)$(VersionSuffix).nupkg</PackageFile>
