@@ -4,7 +4,6 @@ using Renci.SshNet;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Lithium.Build
 {
@@ -48,7 +47,8 @@ namespace Lithium.Build
 			{
 				foreach (var f in GetLocalFiles(source))
 				{
-					CopySourceFileToDestination(client, f, GetRemoteDestination(destination, f));
+					var file = GetFileName(f);
+					CopySourceFileToDestination(client, f, GetRemoteDestination(destination, file));
 				}
 				foreach (var d in GetSourceDirectories(source))
 				{
@@ -64,6 +64,12 @@ namespace Lithium.Build
 			{
 				CopySourceFileToDestination(client, source, GetRemoteDestination(destination, source));
 			}
+		}
+
+		private string GetFileName(string path)
+		{
+			var f = new FileInfo(path);
+			return f.Name;
 		}
 
 		private string GetDirectoryName(string directory)
