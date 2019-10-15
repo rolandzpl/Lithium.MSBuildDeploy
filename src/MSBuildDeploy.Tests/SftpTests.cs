@@ -7,7 +7,7 @@ namespace Lithium.Build
 		[Test]
 		public void Execute_ExistingSourceAndDestination_ReturnsTrue()
 		{
-			var target = GetSftpTask("/home/pi/test", @".\bin\Debug\netcoreapp3.0");
+			var target = GetSftpTask("/home/pi/test", @"..");
 			var result = target.Execute();
 			Assert.That(result, Is.True);
 		}
