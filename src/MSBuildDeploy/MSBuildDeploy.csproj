@@ -63,10 +63,12 @@
 	<Target Name="PublishToNugetOrg" DependsOnTargets="Pack">
 		<Error Condition="$(ApiKey) == ''" Text="ApiKey must be provided to publish package, i.e.: dotnet msbuild -t:PublishToNugetOrg -p:ApiKey=mynugetapikey" />
 		<PropertyGroup>
-			<PackageSourceUrl>https://api.nuget.org/v5/index.json</PackageSourceUrl>
-			<PackageFile>.\bin\Debug\Lithium.MSBuildDeploy.$(VersionPrefix)$(VersionSuffix).nupkg</PackageFile>
+			<PackageSourceUrl>https://api.nuget.org/v3/index.json</PackageSourceUrl>
+			<WorkingDirectory>.\bin\Debug\</WorkingDirectory>
+			<PackageFile>Lithium.MSBuildDeploy.$(VersionPrefix)$(VersionSuffix).nupkg</PackageFile>
 		</PropertyGroup>
-		<Exec Command="dotnet nuget push '$(PackageFile)' -k $(ApiKey) -s $(PackageSourceUrl)" />
+		<Exec Command="dotnet nuget push $(PackageFile) -k $(ApiKey) -s $(PackageSourceUrl)"
+					WorkingDirectory="$(WorkingDirectory)" />
 	</Target>
 
 	<Target Name="PublishToLocal" DependsOnTargets="Pack">
