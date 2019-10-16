@@ -48,12 +48,12 @@
 				<BuildAction>Content</BuildAction>
 			</_PackageFiles>
 			<_PackageFiles Include="Lithium.MSBuildDeploy.targets">
-				<PackagePath>build</PackagePath>
+				<PackagePath>build\%(RecursiveDir)</PackagePath>
 				<Visible>false</Visible>
 				<BuildAction>Content</BuildAction>
 			</_PackageFiles>
 			<_PackageFiles Include="Lithium.MSBuildDeploy.props">
-				<PackagePath>build</PackagePath>
+				<PackagePath>build\%(RecursiveDir)</PackagePath>
 				<Visible>false</Visible>
 				<BuildAction>Content</BuildAction>
 			</_PackageFiles>
